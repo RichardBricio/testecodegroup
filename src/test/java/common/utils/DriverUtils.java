@@ -1,6 +1,7 @@
 package common.utils;
 
 import java.awt.AWTException;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.Normalizer;
@@ -9,6 +10,7 @@ import java.util.List;
 import common.drivers.DriverManager;
 import common.drivers.DriverType;
 import common.hooks.Hooks;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -29,6 +31,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
+
 import io.cucumber.java.Scenario;
 
 public class DriverUtils {
@@ -38,6 +45,9 @@ public class DriverUtils {
     static WebDriverWait wait;
     static String screenshotName;
     protected static JavascriptExecutor jsExecutor;
+    static ExtentReports extent;
+    static ExtentTest extentTest;
+    static String browser;
     final static Logger logger = LogManager.getLogger(DriverUtils.class);
 
     public static void selectBrowser(DriverType selDriver) throws MalformedURLException {
@@ -45,12 +55,39 @@ public class DriverUtils {
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
     }
 
+    public static void initExtentReport(String testCase){
+		extent = new ExtentReports();
+        ExtentSparkReporter spark = new ExtentSparkReporter("test-output/testReport.html");
+        extentTest = extent.createTest(testCase).assignDevice(browser);
+        
+        spark.config().setTheme(Theme.DARK);
+        spark.config().setDocumentTitle("Automation Report");
+        spark.config().setReportName("Extent Reports");
+        extent.attachReporter(spark);
+	}
+
     public static void setScenario(Scenario sce) {
         scenario = sce;
     }
 
     public static WebDriver getDriver() {
         return driver;
+    }
+
+    public static ExtentReports getExtentReport() {
+        return extent;
+    }
+
+    public static ExtentTest getExtentTest() {
+        return extentTest;
+    }
+
+    public static String getBrowserName() {
+        return browser;
+    }
+
+    public static void setBrowserName(String browserName) {
+        browser = browserName;
     }
 
     /**********************************************************************************
@@ -545,7 +582,7 @@ public class DriverUtils {
 
     public static void takeScreenShot() throws IOException {
         // Embed screenshot to the cucumber report
-        try {
+        try {                
             final byte[] screenshot = ((TakesScreenshot) DriverUtils.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot, "image/png", "Evidencia");
         } catch (Exception e) {
@@ -560,6 +597,20 @@ public class DriverUtils {
             string = string.replaceAll("[^\\p{ASCII}]", "");
         }
         return string;
+    }
+
+    // public void attachScreenShotTest() throws IOException {
+    //     ExtentTest test = extent.createTest("First Test");
+    //     test.pass("Test Started", MediaEntityBuilder.createScreenCaptureFromPath(getScreentShotExtentPath()).build());
+    //     test.pass("Test Finished");
+    // }
+
+    public static String getScreentShotExtentPath() throws IOException {
+        File source = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        String fileName = "screenshot-" + System.currentTimeMillis() + ".png";
+        String path = System.getProperty("user.dir") + "/test-output/" + fileName;
+        FileUtils.copyFile(source, new File(path));
+        return path;
     }
 
 }

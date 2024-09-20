@@ -5,20 +5,22 @@ import java.util.Collection;
 import common.drivers.DriverType;
 import common.utils.DriverUtils;
 import common.utils.TaskManagerUtils;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.WebDriver;
+import com.aventstack.extentreports.ExtentReports;
 import io.cucumber.java.After;
 import io.cucumber.java.Scenario;
 
 public class Hooks {
 	private static WebDriver driver;
+	private static ExtentReports extendReporter;
 	private static Collection<String> taggs;
 	private static Scenario scenario;
 	private static String TempDriverLocation;
 	private static File TempDriver;
 	private static DriverType runningDriver;
 	
-	@BeforeClass
+	@BeforeAll
 	@org.junit.Before
 	public void runBeforeWithOrder() throws Throwable {
 		Hooks.setScenario(scenario);
@@ -27,11 +29,13 @@ public class Hooks {
 
 	public static void tearDown() throws InterruptedException {
 		// String name = Hooks.getScenario().getName();
+		extendReporter = DriverUtils.getExtentReport();
 		driver = DriverUtils.getDriver();
 		try {
 			// if (name.contains("Accounting")) {
 				// System.out.println(name + " - Scenario does not open Browser instance");
 			// } else {
+				extendReporter.flush();
 				driver.manage().deleteAllCookies();
 				driver.quit();
 				if (getRunningDriver() == DriverType.CHROME) {

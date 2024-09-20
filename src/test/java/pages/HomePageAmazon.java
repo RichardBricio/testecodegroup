@@ -14,6 +14,9 @@ public class HomePageAmazon {
 	@FindBy(xpath = "//input[@id='twotabsearchtextbox']")
 	WebElement barraPesquisa;
 
+	@FindBy(xpath = "//input[@id='nav-search-submit-button']")
+	WebElement btnBuscar;
+
 	@FindBy(xpath = "//a[@id='nav-hamburger-menu']")
 	WebElement menuTodos;
 	
@@ -70,6 +73,10 @@ public class HomePageAmazon {
 
 	public WebElement getBarraPesquisa() {
 		return barraPesquisa;
+	}
+
+	public WebElement getBtnBuscar() {
+		return btnBuscar;
 	}
 
 	public WebElement getMenuTodos() {
