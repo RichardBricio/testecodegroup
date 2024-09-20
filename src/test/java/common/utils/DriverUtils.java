@@ -53,12 +53,15 @@ public class DriverUtils {
     public static void selectBrowser(DriverType selDriver) throws MalformedURLException {
         driver = DriverManager.getManager(selDriver);
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
+        extentTest.assignDevice(browser);
     }
 
     public static void initExtentReport(String testCase){
-		extent = new ExtentReports();
+        if (extent == null) {
+            extent = new ExtentReports();
+        }		
         ExtentSparkReporter spark = new ExtentSparkReporter("test-output/testReport.html");
-        extentTest = extent.createTest(testCase).assignDevice(browser);
+        extentTest = extent.createTest(testCase);
         
         spark.config().setTheme(Theme.DARK);
         spark.config().setDocumentTitle("Automation Report");
@@ -78,8 +81,16 @@ public class DriverUtils {
         return extent;
     }
 
+    public static void setExtentReport(ExtentReports extReports) {
+        extent = extReports;
+    }
+
     public static ExtentTest getExtentTest() {
         return extentTest;
+    }
+
+    public static void setExtentReport(ExtentTest extTest) {
+        extentTest = extTest;
     }
 
     public static String getBrowserName() {

@@ -1,5 +1,6 @@
 Feature: Navigate Between Menus
 
+	@Test
 	Scenario: Validates navigation between all Amazon menus
 		Given Test case: 'Navigate Between Menus'
 		Given That I am using the browser CHROME

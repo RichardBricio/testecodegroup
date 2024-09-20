@@ -34,7 +34,7 @@ public class CommonSteps {
 				logger.info(DriverType.IE + " browser selected and opened successfully");
 				Assert.assertTrue(true);
 				break;
-			case "DOCKER_CHROME":
+			case "FIREFOX":
 				DriverUtils.selectBrowser(DriverType.FIREFOX);
 				logger.info(DriverType.FIREFOX + " browser selected and opened successfully");
 				Assert.assertTrue(true);

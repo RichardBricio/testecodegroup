@@ -17,6 +17,9 @@ public class HomePageAmazon {
 	@FindBy(xpath = "//input[@id='nav-search-submit-button']")
 	WebElement btnBuscar;
 
+	@FindBy(xpath = "//div[@id='nav-flyout-searchAjax']")
+	WebElement boxAutoComplete;
+
 	@FindBy(xpath = "//a[@id='nav-hamburger-menu']")
 	WebElement menuTodos;
 	
@@ -71,12 +74,19 @@ public class HomePageAmazon {
 	@FindBy(xpath = "//a[contains(text(),'Brinquedos e Jogos')]")
 	WebElement menuBrinquedosEJogos;
 
+	@FindBy(xpath = "//span[contains(text(),'Notebook ASUS X515MA, Celeron Dual Core, SSD 128GB')]")
+	WebElement noteAsus;
+
 	public WebElement getBarraPesquisa() {
 		return barraPesquisa;
 	}
 
 	public WebElement getBtnBuscar() {
 		return btnBuscar;
+	}
+
+	public WebElement getBoxAutoComplete() {
+		return boxAutoComplete;
 	}
 
 	public WebElement getMenuTodos() {
@@ -149,6 +159,10 @@ public class HomePageAmazon {
 
 	public WebElement getMenuBrinquedosEJogos() {
 		return menuBrinquedosEJogos;
+	}
+
+	public WebElement getPdtNoteGalaxyi7() {
+			return noteAsus;
 	}
 
 }

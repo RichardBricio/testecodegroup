@@ -40,6 +40,9 @@ public class Hooks {
 				driver.quit();
 				if (getRunningDriver() == DriverType.CHROME) {
 					TaskManagerUtils.killProcess("chromedriver.exe");
+				} else if (getRunningDriver() == DriverType.FIREFOX) {
+					TaskManagerUtils.killProcess("firefox.exe");
+					TaskManagerUtils.killProcess("geckodriver.exe");
 				}
 			// }
 		} catch (Exception e) {

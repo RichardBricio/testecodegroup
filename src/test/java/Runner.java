@@ -6,8 +6,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.runner.RunWith;
+import org.testng.annotations.AfterTest;
+
 import java.io.IOException;
 
 @RunWith(Cucumber.class)
@@ -20,9 +21,9 @@ public class Runner extends AbstractTestNGCucumberTests {
         logger.info("----- TEST EXECUTION INITIATED THROUGH THE DEVOPS RUNNER - JUNIT -----");
     }
 
-    @AfterEach
+    @AfterTest
     public static void tearDown() throws IOException, InterruptedException {
-
+        Hooks.tearDown();
     }
 
     @AfterClass
